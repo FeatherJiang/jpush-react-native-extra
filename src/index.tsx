@@ -17,6 +17,6 @@ const JpushReactNativeExtra = NativeModules.JpushReactNativeExtra
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return JpushReactNativeExtra.multiply(a, b);
+export function getExtras(): Promise<number> {
+  return JpushReactNativeExtra.getExtras();
 }
