@@ -17,6 +17,6 @@ const JpushReactNativeExtra = NativeModules.JpushReactNativeExtra
       }
     );
 
-export function getExtras(): Promise<number> {
+export function getExtras() {
   return JpushReactNativeExtra.getExtras();
 }

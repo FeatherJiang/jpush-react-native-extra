@@ -1,18 +1,24 @@
-import * as React from 'react';
-
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'jpush-react-native-extra';
+import { getExtras } from 'jpush-react-native-extra';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+  useEffect(() => {
+    getExtras()
+      .then((data: any) => {
+        if (data && data.n_extras) {
+          const extras = JSON.parse(data.n_extras);
+          console.log(extras);
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result</Text>
     </View>
   );
 }

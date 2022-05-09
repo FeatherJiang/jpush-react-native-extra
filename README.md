@@ -11,11 +11,21 @@ npm install jpush-react-native-extra
 ## Usage
 
 ```js
-import { multiply } from "jpush-react-native-extra";
+import { getExtras } from "jpush-react-native-extra";
 
 // ...
-
-const result = await multiply(3, 7);
+getExtras()
+  .then((data) => {
+    if (data && data.n_extras) {
+      const extras = JSON.parse(data.n_extras);
+      if (parseInt(extras.push_type, 10) === 301) {
+        navigate('ToolsRouter');
+      }
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 ```
 
 ## Contributing
