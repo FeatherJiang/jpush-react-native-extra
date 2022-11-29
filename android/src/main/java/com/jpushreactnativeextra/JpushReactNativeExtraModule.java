@@ -2,6 +2,7 @@ package com.jpushreactnativeextra;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -40,16 +41,26 @@ public class JpushReactNativeExtraModule extends ReactContextBaseJavaModule {
             Intent intent = activity.getIntent();
             if (intent != null){
                 String dataSting = intent.getDataString();
+                Bundle extras = intent.getExtras();
+                if (extras != null){
+                  extras.remove("profile");
+                  Log.d("pushExtras1", extras.toString());
+                  WritableMap writableMap = Arguments.fromBundle(extras);
+                  Log.d("pushExtras2", writableMap.toString());
+                  promise.resolve(writableMap);
+                  return;
+                }
                 if (dataSting != null) {
                     JSONObject data = JSON.parseObject(dataSting);
                     WritableMap writableMap = Arguments.createMap();
                     for (String key : data.keySet()) {
                         writableMap.putString(key, data.getString(key));
                     }
+                    Log.d("pushExtras3", writableMap.toString());
                     promise.resolve(writableMap);
-                } else {
-                    promise.reject("jpush-react-native-extra", "data is null");
+                    return;
                 }
+                promise.reject("jpush-react-native-extra", "data or extras is null");
             }else {
                 promise.reject("jpush-react-native-extra", "intent is null");
             }
@@ -57,6 +68,4 @@ public class JpushReactNativeExtraModule extends ReactContextBaseJavaModule {
             promise.reject("jpush-react-native-extra", "getCurrentActivity is null");
         }
     }
-
-    public static native int nativeMultiply(int a, int b);
 }
